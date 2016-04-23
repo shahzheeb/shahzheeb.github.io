@@ -1,6 +1,7 @@
 ---
 published: true
 layout: post
+title: Redis Clusters
 ---
 ## All About Redis
 
