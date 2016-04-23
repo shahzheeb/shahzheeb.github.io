@@ -11,14 +11,15 @@ I wish one day these major drug companies will open source their formulas so tha
 
 ### My Experience in technology
 
-I have majorly worked on Java/JEE but here is the quick snapshot of my technical mambojambo to get an idea:
+I have majorly worked on Java/JEE and its related technologies but here is the quick snapshot of my technical mambojambo to get an idea:
 
 - **Programming/Scripting Languages**: Java, Lua, Python, JavaScript, VC++.
 - **Environments**: Windows, Mac, Linux (Redhat, Ubuntu).
 - **Frameworks**: Spring, NodeJS, JAX-RS (REST), JAX-WS (SOAP), JMS, AngularJS etc.
 - **Caching**: ehCache, Distributed caching with Hazelcast & Redis.
 - **Database**: DB2, MySql, PostgreSql, MongoDB, InfluxDB, Oracle.
-- **Servers/Containers**: Tomcat, Jetty, Websphere, Weblogic, Nodejs.
+- **Servers/Containers**: Tomcat, Jetty, Nginx, Websphere, Weblogic, Nodejs.
+- **Proxies**: Nginx, HAProxy, TwemProxy etc
 - **Monitoring**: Grafana, InfluxDB, Telegraf, Jolokia, Monit, AppDynamics, Zabbix.
 - **Perfomance Engineering**: VisualVM, JConsole, Jmeter, MAT, XRebel etc.
 - **DevOps**: Knowledge of AWS environments/infrasturcture, Chef, Jenkins etc.
