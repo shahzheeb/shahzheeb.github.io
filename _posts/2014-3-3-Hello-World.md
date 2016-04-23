@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "You're up and running!"
+title: "Grafana for realtime graphing"
 published: true
 ---
 
-My First Post will go here.
+Grafana
 
-I will write about Grafana, Influxdb and Telegraf
+In this post we will go over installing and configuring grafana on Mac and Linux, setting up datasource with Influxdb and create few simple realtime charts.
