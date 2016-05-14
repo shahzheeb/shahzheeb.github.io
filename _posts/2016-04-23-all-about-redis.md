@@ -18,7 +18,7 @@ Few important things to note down in redis:
 
 Sentinel provides HA to redis cluster without human intervention. Sentinel cluster monitors the master and in case master node goes down, Sentinel does polling among themselves to choose a slave to be promoted as new master. There are different configuration and setup and you can read more about those at [redis's portal](http://redis.io/topics/sentinel). 
 
-![redis-sentinel.png]({{site.baseurl}}/_posts/redis-sentinel.png)
+![redis-sentinel.png](https://raw.githubusercontent.com/shahzheeb/shahzheeb.github.io/master/_posts/redis-sentinel.png)
 
 In this setup, There is no external proxy or process which can distinguish between master/slave nodes. So the client is directly connecting to the master at all times for write/read operations. The disadvange of this setup is there is:
 - client is connecting to single node for read/write operations which could be a performance bottleneck as slaves are sitting idle while they could have been very well used for read operations.
