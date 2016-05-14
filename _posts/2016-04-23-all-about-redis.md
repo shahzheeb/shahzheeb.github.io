@@ -9,12 +9,22 @@ Recently I have been spending sometime figuring out various clustering technique
 
 Anyhow, I did couple of POCs around pure redis-sentinel cluster and realized that we need some proxies like HAProxy, TWEM Proxy (nutcracker), OneCache etc to make maximum preformance, resilience and availabilty.
 
+Few important things to note down in redis:
+- No master-master replication.
+- A slave can't have multiple masters.
+- One redis cluster can't have more than one master [twemproxy supports multi-masters but technically creates different clusters for each shard].
+
 **Redis-Sentinel**
 
 Sentinel provides HA to redis cluster without human intervention. Sentinel cluster monitors the master and in case master node goes down, Sentinel does polling among themselves to choose a slave to be promoted as new master. There are different configuration and setup and you can read more about those at [redis's portal](http://redis.io/topics/sentinel). 
 
 ![redis-sentinel.png]({{site.baseurl}}/_posts/redis-sentinel.png)
 
+In this setup, There is no external proxy or process which can distinguish between master/slave nodes. So the client is directly connecting to the master at all times for write/read operations. The disadvange of this setup is there is:
+- client is connecting to single node for read/write operations which could be a performance bottleneck as slaves are sitting idle while they could have been very well used for read operations.
+- This solution is not scalable because there is just one write/master in the infrasturcture.
+- There is no external process/proxy to route read/write traffic.
+- Clients needs to have the knowledge of sentinel clusters to get the current master node to connect to.
 
 **HAProxy:**
 
