@@ -59,7 +59,7 @@ backend bk_redis
 
 Proxy's backend configuration for **READ ONLY**:
  
-```
+```json
 frontend ft_redis
 	bind *:6379 name redis
 	default_backend bk_redis
