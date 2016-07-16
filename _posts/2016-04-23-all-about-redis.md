@@ -36,7 +36,7 @@ Proxy's backend configuration for **WRITE**:
 
 This will select only the node which is master to forward the traffic.
 
-```javascript
+```js
 # Specifies listening socket for accepting client connections using the default 
 # REDIS TCP timeout and backend bk_redis TCP health check.
 frontend ft_redis
