@@ -36,10 +36,10 @@ Proxy's backend configuration for **WRITE**:
 
 This will select only the node which is master to forward the traffic.
 
-```
+```json
 frontend ft_redis
-bind *:6378 name redis
-default_backend bk_redis
+	bind *:6378 name redis
+	default_backend bk_redis
 
 backend bk_redis
 	balance first
@@ -60,7 +60,7 @@ backend bk_redis
  
  Proxy's backend configuration for **READ ONLY**:
  
- ```json
+ ```
  frontend ft_redis
 	bind *:6379 name redis
 	default_backend bk_redis
