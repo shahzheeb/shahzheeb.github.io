@@ -29,6 +29,7 @@ In this setup, There is no external proxy or process which can distinguish betwe
 To overcome these challanges, We can use twem, haproxy, onecache etc. I did a comparision prototype on HAProxy & TWEM proxy (nutcracker). Here are my learnings 
 
 **HAProxy:**
+
 HAProxy is a matured and time tested proxy for number of platforms including Redis cache. HAProxy also has a web interface to monitor frontend/backend traffic. In my setting, I created two HAProxies - One for write (which has master) and other one for read only. This allows to horizontally grow the cluster for reads and directing all write traffic to write cluster. The nodes on the read HAproxy cluster are basically slaves of the master node. When master goes down, the write proxy will automatically choose the new master (without the need of any external process though the new master is chosen using Redis's sentinel process).
 
 Proxy's backend configuration for **WRITE**:
