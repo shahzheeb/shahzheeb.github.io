@@ -94,3 +94,12 @@ Twitter's official version of [twem proxy (nutcracker)](https://github.com/twitt
 Though I found a forked repository of twem which works with Sentinel and the maintainers are very active.
 
 [Git link to TwemProxy with Sentinel](https://github.com/ifwe/twemproxy)
+
+The advantage of TwemProxy is that it shards the data into different Redis clusters based on your data key. This allows a very nice horizontal scaling. and if we are using sentinel then we will have the benefit of full HA as well.
+
+If you dont want to use the forked version of twem that I have mentioned above, you can use the official one and there are plugins/agents available that can monitor sentinel for switchover events and re-configure twem's configuration file at runtime. One of such agent is [this](https://github.com/Stono/redis-twemproxy-agent).
+
+To achive maximum results and scalabilty, We can use the HAProxy and TwemProxy combination which can give us the HaProxy's abilty to isolate read/write traffic and Twem's ability to shard. Please see [this setup](https://github.com/Stono/redis-twemproxy-agent) which is using both the proxies but it all depend on your individual usecase.
+
+
+
