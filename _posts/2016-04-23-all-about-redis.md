@@ -60,13 +60,11 @@ backend bk_redis
  
  Proxy's backend configuration for **READ ONLY**:
  
- ```
- frontend ft_redis
+```
+frontend ft_redis
 	bind *:6379 name redis
 	default_backend bk_redis
 
-# Specifies the backend Redis proxy server TCP health settings 
-# Ensure it only forward incoming connections to reach a master.
 backend bk_redis
 	option tcp-check
 	tcp-check connect
