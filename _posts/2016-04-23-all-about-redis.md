@@ -40,9 +40,7 @@ This will select only the node which is master to forward the traffic.
 frontend ft_redis
 bind *:6378 name redis
 default_backend bk_redis
-```
 
-```json
 backend bk_redis
 	balance first
 	option tcp-check
