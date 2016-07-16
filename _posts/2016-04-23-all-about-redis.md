@@ -54,7 +54,7 @@ backend bk_redis
 	server redis_6381 localhost:6381 check inter 1s
 	server redis_6388 localhost:6388 check inter 1s 
 	server redis_6389 localhost:6389 check inter 1s
- ```
+
  
  
  Proxy's backend configuration for **READ ONLY**:
