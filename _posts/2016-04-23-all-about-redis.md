@@ -26,7 +26,7 @@ In this setup, There is no external proxy or process which can distinguish betwe
 - There is no external process/proxy to route read/write traffic.
 - Clients needs to have the knowledge of sentinel clusters to get the current master node to connect to.
 
-To overcome these challanges, We can use twem, haproxy, onecache etc. I did a comparision prototype on HAProxy & TWEM proxy. Here are my learnings 
+To overcome these challanges, We can use twem, haproxy, onecache etc. I did a comparision prototype on HAProxy & TWEM proxy (nutcracker). Here are my learnings 
 
 **HAProxy:**
 
