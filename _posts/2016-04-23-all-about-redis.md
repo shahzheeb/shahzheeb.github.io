@@ -36,11 +36,10 @@ Proxy's backend configuration for **WRITE**:
 
 This will select only the node which is master to forward the traffic.
 
-```
+>
 frontend ft_redis
 bind *:6378 name redis
 default_backend bk_redis
-
 backend bk_redis
 	balance first
 	option tcp-check
@@ -58,4 +57,28 @@ backend bk_redis
  ```
  
  
+ Proxy's backend configuration for **READ ONLY**:
  
+ ```json
+ frontend ft_redis
+	bind *:6379 name redis
+	default_backend bk_redis
+
+# Specifies the backend Redis proxy server TCP health settings 
+# Ensure it only forward incoming connections to reach a master.
+backend bk_redis
+	option tcp-check
+	tcp-check connect
+	tcp-check send PING\r\n
+	tcp-check expect string +PONG
+	tcp-check send info\ replication\r\n
+	tcp-check expect string role:slave
+	tcp-check send QUIT\r\n
+	tcp-check expect string +OK
+	server redis_6388 localhost:6388 check inter 1s 
+	server redis_6389 localhost:6389 check inter 1s
+	server redis_6380 localhost:6380 check inter 1s 
+	server redis_6381 localhost:6381 check inter 1s
+ ```
+ 
+In write cluster, At any time, the traffic will be directed to any ONE of the node (master) while readonly cluster will have n-1 nodes listening at all times.
