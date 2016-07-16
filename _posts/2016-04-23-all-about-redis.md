@@ -103,3 +103,7 @@ To achive maximum results and scalabilty, We can use the HAProxy and TwemProxy c
 
 
 
+**Elasticache**
+
+If you are OK with maintaining 2 URLs for Read and Write, you can also think about using elasticache by AWS which has one primary write cluster and upto 5 secondary read replicas. The write cluster's public endpoint doesn't change as it internally takes care of switching of master in case of failure. For read replicas, you can have them behind HAproxy or ELB.
+
