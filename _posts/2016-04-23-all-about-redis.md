@@ -29,4 +29,61 @@ In this setup, There is no external proxy or process which can distinguish betwe
 To overcome these challanges, We can use twem, haproxy, onecache etc. I did a comparision prototype on HAProxy & TWEM proxy (nutcracker). Here are my learnings 
 
 **HAProxy:**
+HAProxy is a matured and time tested proxy for number of platforms including Redis cache. HAProxy also has a web interface to monitor frontend/backend traffic. In my setting, I created two HAProxies - One for write (which has master) and other one for read only. This allows to horizontally grow the cluster for reads and directing all write traffic to write cluster. The nodes on the read HAproxy cluster are basically slaves of the master node. When master goes down, the write proxy will automatically choose the new master (without the need of any external process though the new master is chosen using Redis's sentinel process).
 
+Proxy's backend configuration for **WRITE**:
+
+This will select only the node which is master to forward the traffic.
+
+```
+# Specifies listening socket for accepting client connections using the default 
+# REDIS TCP timeout and backend bk_redis TCP health check.
+frontend ft_redis
+	bind *:6378 name redis
+	default_backend bk_redis
+
+# Ensure it only forward incoming connections to reach a master.
+
+backend bk_redis
+	balance first
+	option tcp-check
+	tcp-check connect
+	tcp-check send PING\r\n
+	tcp-check expect string +PONG
+	tcp-check send info\ replication\r\n
+	tcp-check expect string role:master
+	tcp-check send QUIT\r\n
+	tcp-check expect string +OK
+	
+	server redis_6380 localhost:6380 check inter 1s 
+	server redis_6381 localhost:6381 check inter 1s
+	server redis_6388 localhost:6388 check inter 1s 
+	server redis_6389 localhost:6389 check inter 1s
+ ```
+ 
+ 
+ Proxy's backend configuration for **READ ONLY**:
+ 
+ ```
+ frontend ft_redis
+	bind *:6379 name redis
+	default_backend bk_redis
+
+# Specifies the backend Redis proxy server TCP health settings 
+# Ensure it only forward incoming connections to reach a master.
+backend bk_redis
+	option tcp-check
+	tcp-check connect
+	tcp-check send PING\r\n
+	tcp-check expect string +PONG
+	tcp-check send info\ replication\r\n
+	tcp-check expect string role:slave
+	tcp-check send QUIT\r\n
+	tcp-check expect string +OK
+	server redis_6388 localhost:6388 check inter 1s 
+	server redis_6389 localhost:6389 check inter 1s
+	server redis_6380 localhost:6380 check inter 1s 
+	server redis_6381 localhost:6381 check inter 1s
+ ```
+ 
+In write cluster, At any time, the traffic will be directed to any ONE of the node (master) while readonly cluster will have n-1 nodes listening at all times.
