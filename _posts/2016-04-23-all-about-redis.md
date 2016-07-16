@@ -55,10 +55,9 @@ backend bk_redis
 	server redis_6381 localhost:6381 check inter 1s
 	server redis_6388 localhost:6388 check inter 1s 
 	server redis_6389 localhost:6389 check inter 1s
- ```
- 
- 
- Proxy's backend configuration for **READ ONLY**:
+```
+
+Proxy's backend configuration for **READ ONLY**:
  
 ```
 frontend ft_redis
@@ -78,6 +77,6 @@ backend bk_redis
 	server redis_6389 localhost:6389 check inter 1s
 	server redis_6380 localhost:6380 check inter 1s 
 	server redis_6381 localhost:6381 check inter 1s
- ```
+```
  
 In write cluster, At any time, the traffic will be directed to any ONE of the node (master) while readonly cluster will have n-1 nodes listening at all times.
