@@ -36,7 +36,8 @@ Proxy's backend configuration for **WRITE**:
 
 This will select only the node which is master to forward the traffic.
 
-```frontend ft_redis
+```
+frontend ft_redis
 	bind *:6378 name redis
 	default_backend bk_redis
 
@@ -50,7 +51,6 @@ backend bk_redis
 	tcp-check expect string role:master
 	tcp-check send QUIT\r\n
 	tcp-check expect string +OK
-	
 	server redis_6380 localhost:6380 check inter 1s 
 	server redis_6381 localhost:6381 check inter 1s
 	server redis_6388 localhost:6388 check inter 1s 
