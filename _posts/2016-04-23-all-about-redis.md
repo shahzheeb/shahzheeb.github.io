@@ -5,7 +5,7 @@ title: Redis Clusters
 ---
 ## Redis Clusters
 
-Recently I have been spending sometime figuring out various clustering techniques that can be employed in setting up my redis cluster environment in cloud (AWS). Firstly, AWS had elasticache which has redis option but elasticache doesn't support cross-region replication and in doesn't allow more than 5 read replicas (maybe it will in future releases of elasticache) - which was not meeting our requirements so we decided to stand our own redis cluster on ec2 intances. This gave us more flexibilty but yes - we had to take care of monitoring and some setups ourself which otherwise could have been taken care by elasticache. But thats Ok because redis configurations are not very complicated and for monitoring, We were planning to use influxdb/telegraf combination and not cloudwatch.
+Recently I have been spending some time figuring out various clustering techniques that can be employed in setting up my redis cluster environment in cloud (AWS). Firstly, AWS had elasticache which has redis option but elasticache doesn't support cross-region replication and in doesn't allow more than 5 read replicas (maybe it will in future releases of elasticache) - which was not meeting our requirements so we decided to stand our own redis cluster on ec2 intances. This gave us more flexibilty but yes - we have to take care of monitoring and some setups ourself which otherwise could have been taken care by elasticache. But thats Ok because redis configurations are not very complicated and for monitoring, We were planning to use influxdb/telegraf combination and not cloudwatch.
 
 Anyhow, I did couple of POCs around pure redis-sentinel cluster and realized that we need some proxies like HAProxy, TWEM Proxy (nutcracker), OneCache etc to make maximum preformance, resilience and availabilty.
 
@@ -34,7 +34,7 @@ HAProxy is a matured and time tested proxy for number of platforms including Red
 
 Proxy's backend configuration for **WRITE**:
 
-This will select only the node which is master to forward the traffic.
+This will select only the node which is master to forward the traffic. "tcp-check expect string role:master" will make sure that this backend connects to the node which is currently a master.
 
 ```json
 frontend ft_redis
@@ -80,3 +80,17 @@ backend bk_redis
 ```
  
 In write cluster, At any time, the traffic will be directed to any ONE of the node (master) while readonly cluster will have n-1 nodes listening at all times.
+
+The advantage of using HAProxy is that we don't need any external process to moitor the switching-over of master and re-configure the HAProxy's settings to point to new master.
+
+The limitations on the other hand is that if your requirement is of very high volume writes i.e. greater than 100K WPS then it is difficult to scale becasue we can't have more than one write cluster. In those cases, You may have to consider using twem proxy by twitter.
+
+**Twem Proxy:**
+
+Twitter's official version of [twem proxy (nutcracker)](https://github.com/twitter/twemproxy) doesn't support Sentinel and also the community is not very active. 
+
+[Sentinel not support by official twem](https://github.com/twitter/twemproxy/issues/297)
+
+Though I found a forked repository of twem which works with Sentinel and the maintainers are very active.
+
+[Git link to TwemProxy with Sentinel](https://github.com/ifwe/twemproxy)
