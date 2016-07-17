@@ -3,9 +3,7 @@ published: true
 layout: post
 title: Redis Clusters
 ---
-## Redis Clusters
-
-Recently I have been spending some time figuring out various clustering techniques that can be employed in setting up my redis cluster environment in cloud (AWS). Firstly, AWS had elasticache which has redis option but elasticache doesn't support cross-region replication and in doesn't allow more than 5 read replicas (maybe it will in future releases of elasticache) - which was not meeting our requirements so we decided to stand our own redis cluster on ec2 intances. This gave us more flexibilty but yes - we have to take care of monitoring and some setups ourself which otherwise could have been taken care by elasticache. But thats Ok because redis configurations are not very complicated and for monitoring, We were planning to use influxdb/telegraf combination and not cloudwatch.
+Recently I have been spending some time figuring out various clustering techniques that can be used in setting up redis cluster environment in cloud (AWS) or otherwise. First, AWS has elasticache which has redis option but elasticache doesn't support cross-region replication and in doesn't allow more than 5 read replicas (maybe it will in future releases of elasticache) - which was not meeting our requirements so we decided to stand our own redis cluster on ec2 intances. This gave us more flexibilty but yes - we have to take care of monitoring and some setups ourself which otherwise could have been taken care by elasticache. But thats Ok because redis configurations are not very complicated and for monitoring, We were planning to use influxdb/telegraf combination and not cloudwatch.
 
 Anyhow, I did couple of POCs around pure redis-sentinel cluster and realized that we need some proxies like HAProxy, TWEM Proxy (nutcracker), OneCache etc to make maximum preformance, resilience and availabilty.
 
@@ -167,4 +165,3 @@ To achive maximum results and scalabilty, We can use the HAProxy and TwemProxy c
 **Elasticache**
 
 If you are OK with maintaining 2 URLs for Read and Write, you can also think about using elasticache by AWS which has one primary write cluster and upto 5 secondary read replicas. The write cluster's public endpoint doesn't change as it internally takes care of switching of master in case of failure. For read replicas, you can have them behind HAproxy or ELB.
-
